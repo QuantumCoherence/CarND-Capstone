@@ -26,9 +26,9 @@ startimg = 0
 
 
 for ii in range(startimg,num_images):
-	labname = "/home/philip/sdc/CarND-Capstone/ros/src/tl_detector/tl_labels/tl_label_%05d.txt" % ii
+	labname = "tl_labels/tl_label_%05d.txt" % ii
 
-	imgname = "/home/philip/sdc/CarND-Capstone/ros/src/tl_detector/tl_images/tl_image_%05d.png" % ii
+	imgname = "tl_images/tl_image_%05d.png" % ii
 
 	with open(labname, "r") as label_file:
 		label = np.int(label_file.read())
