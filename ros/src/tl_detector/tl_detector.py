@@ -16,7 +16,7 @@ STATE_COUNT_THRESHOLD = 3
 
 class TLDetector(object):
     def __init__(self):
-        rospy.init_node('tl_detector')
+        rospy.init_node('tl_detector', log_level=rospy.DEBUG)
 
         self.pose = None
         self.waypoints = None
@@ -24,6 +24,8 @@ class TLDetector(object):
         self.waypoint_tree = None
         self.camera_image = None
         self.lights = []
+        self.imagecounter = 0
+        self.callcounter = 0
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
@@ -121,6 +123,34 @@ class TLDetector(object):
 
         """
         # Option 1 - Testing without image processing
+
+
+        if(not self.has_image):
+            self.prev_light_loc = None
+            return False
+
+        #########################################################################
+        # should we save an image?
+        if(self.camera_image is not None):
+            self.callcounter += 1
+            if(not (self.callcounter % 10)):  # images come at 10 Hz, so let's save every 10th image
+                
+                # convert to CV image
+                cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
+
+                # write the image to file
+                image_file_name = "tl_data/tl_images/tl_image_%05d.png" % self.imagecounter
+                rospy.loginfo("Saving image : %s" % image_file_name)
+                status = cv2.imwrite(image_file_name,cv_image)
+
+                # write the label to file
+                with open("tl_data/tl_labels/tl_label_%05d.txt" % self.imagecounter, "w") as label_file:
+                    label_file.write("{}".format(light.state))
+                
+                self.imagecounter += 1
+
+        ########################################################################
+        
         return light.state
 
         # Option 2 - With image processing with TL classification 
@@ -129,6 +159,9 @@ class TLDetector(object):
         #     return False
 
         # cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
+
+        # save image and state for training a classifier
+
 
         #Get classification
         # return self.light_classifier.get_classification(cv_image)
