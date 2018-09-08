@@ -11,6 +11,7 @@ class TLClassifier(object):
         self.model = load_model('tl_detection_model/TLD_simulator.h5')
         self.graph = tf.get_default_graph()
         self.model._make_predict_function()
+        self.labels = {0:'green',1:'red',2:'unknown',3:'yellow'}  # this is how the model assigns labels
 
     def get_classification(self, image):
         """Determines the color of the traffic light in the image
@@ -38,7 +39,7 @@ class TLClassifier(object):
           prediction = self.model.predict(test_image)[0]
 
         label = np.argmax(prediction)
-        rospy.loginfo("{}".format(label))
+        rospy.loginfo("traffic light : {}".format(self.labels[label]))
 
         # {'unknown': 2, 'green': 0, 'yellow': 3, 'red': 1}, i.e. alphabetical
 
