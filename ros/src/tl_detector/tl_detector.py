@@ -160,9 +160,6 @@ class TLDetector(object):
 
         cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
-        strval = "%s" % str(cv_image.shape)
-        rospy.loginfo(strval)
-
         return self.light_classifier.get_classification(cv_image)
 
     def process_traffic_lights(self):

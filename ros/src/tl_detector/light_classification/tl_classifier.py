@@ -3,10 +3,14 @@ from keras.models import load_model
 import numpy as np
 import cv2
 import rospy
+import tensorflow as tf
+
 
 class TLClassifier(object):
     def __init__(self):
         self.model = load_model('tl_detection_model/TLD_simulator.h5')
+        self.graph = tf.get_default_graph()
+        self.model._make_predict_function()
 
     def get_classification(self, image):
         """Determines the color of the traffic light in the image
@@ -29,24 +33,26 @@ class TLClassifier(object):
         test_image = test_image.astype('float32')
         test_image /= 255.
         test_image = np.expand_dims(test_image,0)
-        rospy.loginfo("{}".format(str(test_image.shape)))
-        prediction = self.model.predict(test_image)
+        with self.graph.as_default():
+          prediction = self.model.predict(test_image)[0]
+
+        label = np.argmax(prediction)
+        rospy.loginfo("{}".format(label))
 
         # {'unknown': 2, 'green': 0, 'yellow': 3, 'red': 1}, i.e. alphabetical
-
 
         # uint8 UNKNOWN=4
         # uint8 GREEN=2
         # uint8 YELLOW=1
         # uint8 RED=0
 
-        if prediction==0:
+        if label==0:
           return TrafficLight.GREEN 
-        elif prediction==1:
+        elif label==1:
           return TrafficLight.RED 
-        elif prediction==2:
+        elif label==2:
           return TrafficLight.UNKNOWN 
-        elif prediction==3:
+        elif label==3:
           return TrafficLight.YELLOW
 
         #################################################
