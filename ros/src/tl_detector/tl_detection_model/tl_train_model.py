@@ -69,7 +69,7 @@ if __name__ == '__main__':
   
   # Learning parameters
   batch_size = 32
-  epochs = 20
+  epochs = 10
 
   # split the data imges into training and test
   all_data_dir = "tl_data/all_data"
@@ -131,6 +131,8 @@ if __name__ == '__main__':
       batch_size=batch_size,
       class_mode='categorical')
 
+  print(test_generator.class_indices)
+
   # Unleash the training
   model.fit_generator(
       generator=train_generator,
@@ -140,9 +142,8 @@ if __name__ == '__main__':
       shuffle=True)
 
   # Save the model
+  print(test_generator.class_indices)
   model_name = 'TLD_simulator.h5'
-  model.save_weights(model_name) 
-
-  # model_json = model.to_json()
+  model.save(model_name) 
 
 
