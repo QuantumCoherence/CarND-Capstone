@@ -1,5 +1,8 @@
 from styx_msgs.msg import TrafficLight
 from keras.models import load_model
+import numpy as np
+import cv2
+import rospy
 
 class TLClassifier(object):
     def __init__(self):
@@ -21,8 +24,13 @@ class TLClassifier(object):
         ##################################################
       
         # TODO:  Make sure that "image" is in the correct format expected by predict (should it be in a list, RGB vs BGR, etc.)
-
-        prediction = self.model.predict(image)
+        test_image = cv2.resize(image, (224, 224)) 
+        test_image = np.array(test_image)
+        test_image = test_image.astype('float32')
+        test_image /= 255.
+        test_image = np.expand_dims(test_image,0)
+        rospy.loginfo("{}".format(str(test_image.shape)))
+        prediction = self.model.predict(test_image)
 
         # {'unknown': 2, 'green': 0, 'yellow': 3, 'red': 1}, i.e. alphabetical
 
