@@ -30,6 +30,7 @@ class TLClassifier(object):
         # TODO:  Make sure that "image" is in the correct format expected by predict (should it be in a list, RGB vs BGR, etc.)
         test_image = cv2.resize(image, (224, 224)) 
         test_image = np.array(test_image)
+        test_image = test_image[...,::-1]
         test_image = test_image.astype('float32')
         test_image /= 255.
         test_image = np.expand_dims(test_image,0)
