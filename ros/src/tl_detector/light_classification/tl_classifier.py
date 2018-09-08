@@ -2,7 +2,7 @@ from styx_msgs.msg import TrafficLight
 
 class TLClassifier(object):
     def __init__(self):
-        self.model = load_model('TLD_simulator.h5')
+        self.model = load_model('tl_detection_model/TLD_simulator.h5')
 
     def get_classification(self, image):
         """Determines the color of the traffic light in the image
