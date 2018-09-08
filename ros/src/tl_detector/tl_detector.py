@@ -122,49 +122,48 @@ class TLDetector(object):
             int: ID of traffic light color (specified in styx_msgs/TrafficLight)
 
         """
-        # Option 1 - Testing without image processing
+        # # Option 1 - Testing without image processing
 
 
-        if(not self.has_image):
-            self.prev_light_loc = None
-            return False
-
-        #########################################################################
-        # should we save an image?
-        if(self.camera_image is not None):
-            self.callcounter += 1
-            if(not (self.callcounter % 10)):  # images come at 10 Hz, so let's save every 10th image
-                
-                # convert to CV image
-                cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
-
-                # write the image to file
-                image_file_name = "tl_data/tl_images/tl_image_%05d.png" % self.imagecounter
-                rospy.loginfo("Saving image : %s" % image_file_name)
-                status = cv2.imwrite(image_file_name,cv_image)
-
-                # write the label to file
-                with open("tl_data/tl_labels/tl_label_%05d.txt" % self.imagecounter, "w") as label_file:
-                    label_file.write("{}".format(light.state))
-                
-                self.imagecounter += 1
-
-        ########################################################################
-        
-        return light.state
-
-        # Option 2 - With image processing with TL classification 
         # if(not self.has_image):
         #     self.prev_light_loc = None
         #     return False
 
-        # cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
+        # # #########################################################################
+        # # # should we save an image?
+        # # if(self.camera_image is not None):
+        # #     self.callcounter += 1
+        # #     if(not (self.callcounter % 10)):  # images come at 10 Hz, so let's save every 10th image
+                
+        # #         # convert to CV image
+        # #         cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
-        # save image and state for training a classifier
+        # #         # write the image to file
+        # #         image_file_name = "tl_data/tl_images/tl_image_%05d.png" % self.imagecounter
+        # #         rospy.loginfo("Saving image : %s" % image_file_name)
+        # #         status = cv2.imwrite(image_file_name,cv_image)
 
+        # #         # write the label to file
+        # #         with open("tl_data/tl_labels/tl_label_%05d.txt" % self.imagecounter, "w") as label_file:
+        # #             label_file.write("{}".format(light.state))
+                
+        # #         self.imagecounter += 1
 
-        #Get classification
-        # return self.light_classifier.get_classification(cv_image)
+        # ########################################################################
+        
+        # return light.state
+
+        # Option 2 - With image processing with TL classification 
+        if(not self.has_image):
+            self.prev_light_loc = None
+            return False
+
+        cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
+
+        strval = "%s" % string(camera_image.shape)
+        rospy.loginfo(strval)
+
+        return self.light_classifier.get_classification(cv_image)
 
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its

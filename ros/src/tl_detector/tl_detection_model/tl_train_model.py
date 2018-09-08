@@ -81,7 +81,7 @@ if __name__ == '__main__':
       testing_data_dir=testing_data_dir, 
       testing_data_pct=0.2)
 
-  # define the simple model
+  # Define the simple convolutional model
   img_width, img_height = 224, 224
   input_shape = (img_width, img_height, 3)
 

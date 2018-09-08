@@ -1,4 +1,5 @@
 from styx_msgs.msg import TrafficLight
+from keras.models import load_model
 
 class TLClassifier(object):
     def __init__(self):
@@ -37,7 +38,7 @@ class TLClassifier(object):
           return TrafficLight.RED 
         elif prediction==2:
           return TrafficLight.UNKNOWN 
-        elif prediction==3
+        elif prediction==3:
           return TrafficLight.YELLOW
 
         #################################################
