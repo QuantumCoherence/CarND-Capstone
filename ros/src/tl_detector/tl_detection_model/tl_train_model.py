@@ -63,6 +63,8 @@ def split_dataset_into_test_and_train_sets(all_data_dir, training_data_dir, test
     print("Processed " + str(num_training_files) + " training images.")
     print("Processed " + str(num_testing_files) + " testing images.")
 
+    return num_training_files, num_testing_files
+
 #########################################################################################
 
 if __name__ == '__main__':
@@ -75,7 +77,7 @@ if __name__ == '__main__':
   all_data_dir = "tl_data/all_data"
   training_data_dir="tl_data/train"
   testing_data_dir="tl_data/test" 
-  split_dataset_into_test_and_train_sets(
+  num_train_samples, num_test_samples = split_dataset_into_test_and_train_sets(
       all_data_dir=all_data_dir, 
       training_data_dir=training_data_dir, 
       testing_data_dir=testing_data_dir, 
@@ -106,7 +108,7 @@ if __name__ == '__main__':
   model.add(Activation('softmax'))
 
   model.compile(
-      optimizer='adam', 
+      optimizer='adagrad', 
       loss='categorical_crossentropy',
       metrics=['accuracy'])
 
@@ -136,10 +138,11 @@ if __name__ == '__main__':
   # Unleash the training
   model.fit_generator(
       generator=train_generator,
+      steps_per_epoch=int(num_train_samples/batch_size),
       epochs=epochs,
       validation_data=test_generator,
-      use_multiprocessing=False,
-      shuffle=True)
+      validation_steps=int(num_test_samples/batch_size),
+      use_multiprocessing=False)
 
   # Save the model
   print(test_generator.class_indices)
