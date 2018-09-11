@@ -3,6 +3,8 @@ ros/src/tl_detector/tl_detection_model/tl_data/TL_simulator_original
 ros/src/tl_detector/tl_detection_model/tl_data/TL_site_original
 ros/src/tl_detector/tl_detection_model/tl_data/test
 ros/src/tl_detector/tl_detection_model/tl_data/train
+ros/src/tl_detector/tl_detection_model/tl_data/simulator_data
+ros/src/tl_detector/tl_detection_model/tl_data/site_data
 build
 devel
 
