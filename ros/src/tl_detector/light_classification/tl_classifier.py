@@ -7,14 +7,16 @@ import tensorflow as tf
 
 
 class TLClassifier(object):
-    def __init__(self):
+    def __init__(self, is_site):
 
         ###############################################################
         # Choose which traffic light model we want to use:  "site" or "simulator"
         # Next, we should be able to change this via config parameter ...
 
-        self.model = load_model('tl_detection_model/TLD_simulator.h5')
-        # self.model = load_model('tl_detection_model/TLD_site.h5')
+        if(is_site):
+          self.model = load_model('tl_detection_model/TLD_site.h5')
+        else:
+          self.model = load_model('tl_detection_model/TLD_simulator.h5')
 
         ##############################################################
 
