@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
   # Learning parameters
   batch_size = 32
-  epochs = 100
+  epochs = 200
 
   # split the data images into training and test
   all_data_dir = "tl_data/%s_data" % scene_type 
