@@ -69,19 +69,29 @@ def split_dataset_into_test_and_train_sets(all_data_dir, training_data_dir, test
 
 if __name__ == '__main__':
   
+  scene_type = 'site'
+
   # Learning parameters
   batch_size = 32
-  epochs = 10
+  epochs = 100
 
-  # split the data imges into training and test
-  all_data_dir = "tl_data/all_data"
+  # split the data images into training and test
+  all_data_dir = "tl_data/%s_data" % scene_type 
   training_data_dir="tl_data/train"
   testing_data_dir="tl_data/test" 
-  num_train_samples, num_test_samples = split_dataset_into_test_and_train_sets(
+
+  split_dataset_into_test_and_train_sets(
       all_data_dir=all_data_dir, 
       training_data_dir=training_data_dir, 
       testing_data_dir=testing_data_dir, 
       testing_data_pct=0.2)
+
+  num_train_samples = sum([len(files) for r, d, files in os.walk(training_data_dir)])
+  num_test_samples = sum([len(files) for r, d, files in os.walk(testing_data_dir)])
+
+  # First check that we are usinga  GPU
+  from tensorflow.python.client import device_lib
+  print(device_lib.list_local_devices())
 
   # Define the simple convolutional model
   img_width, img_height = 224, 224
@@ -146,7 +156,7 @@ if __name__ == '__main__':
 
   # Save the model
   print(test_generator.class_indices)
-  model_name = 'TLD_simulator.h5'
+  model_name = 'TLD_%s.h5' % scene_type
   model.save(model_name) 
 
 

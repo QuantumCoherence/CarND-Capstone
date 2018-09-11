@@ -9,9 +9,9 @@ import ntpath
 #####################################
 
 
-basepath = "TL_original"
+basepath = "TL_simulator_original"
 directories = {"TL011":"TL01/data01", "TL012":"TL01/data02", "TL013":"TL01/data03", "TL02":"TL02", "TL03":"TL03","TL04":"TL04"}
-destpath = "all_data"
+destpath = "simulation_data"
 categories = ["red","green","yellow","unknown"]
 
 for dtag,dd in directories.iteritems():
@@ -29,7 +29,23 @@ for dtag,dd in directories.iteritems():
         
 
 
+basepath = "TL_site_original"
+directories = {"yuda":"yuda_data", "github":"github_data"}
+destpath = "site_data"
+categories = ["red","green","yellow","unknown"]
 
+for dtag,dd in directories.iteritems():
+  for cc in categories:
+    folder = basepath + "/" + dd + "/" + cc
+    if os.path.isdir(folder):
+      print(folder)
+      files = glob.glob("%s/*.*g" % folder)
+      for ff in files:
+        imgname = ntpath.basename(ff)
+        newimgname = destpath + "/" + cc + "/" + dtag + imgname
+        cmd = "cp %s %s" % (ff,newimgname)
+        print(cmd)
+        call(["cp",ff,newimgname])
 
 
 

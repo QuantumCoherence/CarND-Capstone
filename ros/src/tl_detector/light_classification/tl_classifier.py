@@ -9,6 +9,7 @@ import tensorflow as tf
 class TLClassifier(object):
     def __init__(self):
         self.model = load_model('tl_detection_model/TLD_simulator.h5')
+        # self.model = load_model('tl_detection_model/TLD_site.h5')
         self.graph = tf.get_default_graph()
         self.model._make_predict_function()
         self.labels = {0:'green',1:'red',2:'unknown',3:'yellow'}  # this is how the model assigns labels

@@ -1,5 +1,6 @@
 *.py[cod]
-ros/src/tl_detector/tl_detection_model/tl_data/TL_original
+ros/src/tl_detector/tl_detection_model/tl_data/TL_simulator_original
+ros/src/tl_detector/tl_detection_model/tl_data/TL_site_original
 ros/src/tl_detector/tl_detection_model/tl_data/test
 ros/src/tl_detector/tl_detection_model/tl_data/train
 build
