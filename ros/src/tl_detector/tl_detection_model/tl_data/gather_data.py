@@ -30,7 +30,7 @@ for dtag,dd in directories.iteritems():
 
 
 basepath = "TL_site_original"
-directories = {"yuda":"yuda_data", "github":"github_data"}
+directories = {"yuda":"yuda_data", "yuda2":"yuda2_data", "github":"github_data"}
 destpath = "site_data"
 categories = ["red","green","yellow","unknown"]
 
