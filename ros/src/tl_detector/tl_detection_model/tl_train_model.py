@@ -69,6 +69,7 @@ def split_dataset_into_test_and_train_sets(all_data_dir, training_data_dir, test
 
 if __name__ == '__main__':
   
+  # Choose if we want to do "simulator" or "site"
   scene_type = 'site'
 
   # Learning parameters

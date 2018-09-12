@@ -47,16 +47,10 @@ class TLDetector(object):
 
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
-
-
-
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
-
         self.bridge = CvBridge()
         self.light_classifier = TLClassifier(self.config['is_site'])
         self.listener = tf.TransformListener()
-
-        
 
         rospy.spin()
 
@@ -175,6 +169,14 @@ class TLDetector(object):
             int: ID of traffic light color (specified in styx_msgs/TrafficLight)
 
         """
+
+        # ######################################################################
+        # # This is just for testing light classification with site data:
+        # if self.config['is_site']:
+        #   cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
+        #   self.light_classifier.get_classification(cv_image)
+        # ######################################################################
+
         closest_light = None
         line_wp_idx = None
 
@@ -200,8 +202,6 @@ class TLDetector(object):
             state = self.get_light_state(closest_light)
             return line_wp_idx, state
         
-        # self.waypoints = None
-
         return -1, TrafficLight.UNKNOWN
 
 if __name__ == '__main__':

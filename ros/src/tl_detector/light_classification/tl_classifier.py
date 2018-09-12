@@ -12,14 +12,12 @@ class TLClassifier(object):
         ###############################################################
         # Choose which traffic light model we want to use:  "site" or "simulator"
         # Next, we should be able to change this via config parameter ...
-
+        model_file_name = 'tl_detection_model/TLD_simulator.h5'
         if(is_site):
-          self.model = load_model('tl_detection_model/TLD_site.h5')
-        else:
-          self.model = load_model('tl_detection_model/TLD_simulator.h5')
+          model_file_name = 'tl_detection_model/TLD_site.h5'
 
+        self.model = load_model(model_file_name)
         ##############################################################
-
 
         self.graph = tf.get_default_graph()
         self.model._make_predict_function()
@@ -40,7 +38,8 @@ class TLClassifier(object):
 
         ##################################################
       
-        # TODO:  Make sure that "image" is in the correct format expected by predict (should it be in a list, RGB vs BGR, etc.)
+        # TODO:  Make sure that "image" is in the correct format expected by predict 
+        # (should be in a list, RGB vs BGR, float, scaled, etc.)
         test_image = cv2.resize(image, (224, 224)) 
         test_image = np.array(test_image)
         test_image = test_image[...,::-1]
@@ -54,11 +53,6 @@ class TLClassifier(object):
         rospy.loginfo("traffic light : {}".format(self.labels[label]))
 
         # {'unknown': 2, 'green': 0, 'yellow': 3, 'red': 1}, i.e. alphabetical
-
-        # uint8 UNKNOWN=4
-        # uint8 GREEN=2
-        # uint8 YELLOW=1
-        # uint8 RED=0
 
         if label==0:
           return TrafficLight.GREEN 
