@@ -32,7 +32,7 @@ The central component of the project. This node uses the camera image, car posit
 The classifier is constructed as a CNN with the following structure:
 
 | Layer | Output shape |
-|:-----:|:------------:|:---------------:|
+|:-----:|:------------:|
 | Input RGB image | ? x ? x 3 |
 | Resize | 224 x 224 x 3 |
 | Convolution 3 x 3 (RELU activation) | 222 x 222 x 32 |
